@@ -41,7 +41,6 @@ class components:
         
     def prepareOpf(self, htmls, images):
         opfPath = self.__getFilePath(".opf")
-        print opfPath
         opfParser = xmlParser(opfPath)
         opfParser.configureManifest(htmls, images)
         opfParser.configureSpine(htmls)
@@ -50,7 +49,6 @@ class components:
 
     def prepareNcx(self):
         ncxPath = self.__getFilePath(".ncx")
-        print ncxPath
         ncxParser = xmlParser(ncxPath)
         ncxParser.configureNavegationPoint()
         return ncxParser.getRoot()
