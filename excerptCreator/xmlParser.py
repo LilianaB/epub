@@ -31,15 +31,19 @@ class xmlParser:
         string = ET.tostring(self.root)
         return string
                       
-    def configureManifest(self, htmls):
+    def configureManifest(self, htmls, images):
         self.clearElement("manifest")
         elementManifest = self.getElement("manifest")
-        self.__addItemsToManifest(elementManifest, htmls)
+        self.__addItemsToManifest(elementManifest, htmls, images)
 
-    def __addItemsToManifest(self, manifestElement, htmls):
+    def __addItemsToManifest(self, manifestElement, htmls, images):
+        index = 0
         for i, html in enumerate(htmls):
             basename = os.path.basename(html)
             self.__addXhtmlToManifest(manifestElement, i, basename)
+            
+        for i, image in enumerate(images):
+            self.__addImagesToManifest(manifestElement, i, image)
         self.__addStyleToManifest(manifestElement)
         self.__addTocToManifest(manifestElement)
         
@@ -53,6 +57,10 @@ class xmlParser:
         
     def __addStyleToManifest(self, manifestElement):
         itemInformation = {'id':"template-css", 'href': "style.css", 'media-type':"text/css"}
+        SubElement(manifestElement, "ns0:item", itemInformation)
+
+    def __addImagesToManifest(self, manifestElement, id, name):
+        itemInformation = {'id':'image_%s' % (id), 'href': "images/"+ name, 'media-type':"image/jpeg"}
         SubElement(manifestElement, "ns0:item", itemInformation)
         
     def configureSpine(self, htmls):
