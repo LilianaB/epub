@@ -14,13 +14,12 @@ class epubContent:
             "<img src='images/cover.jpg'"+\
             "id='icontxt' class='icon'/></div>",1)
         
-    def addDoctype(self):
-        self.content = self.content.replace("<head>", '<head><title>Liebe, Sex und andere Katastrophen</title>',1)
+    def cleanHtml(self):
+        self.content = self.content.replace("<head>", '<head><title>ePub Excerpt</title>',1)
         self.content = self.content.replace("<html>", '<html xmlns="http://www.w3.org/1999/xhtml">',1)
         self.content = self.content.replace("&nbsp", "&#160")
         self.content = self.content.replace("&ndash", "&#8211")
-        self.content = '<?xml version="1.0" encoding="utf-8"?> \n'+\
-        self.content
+        self.content = '<?xml version="1.0" encoding="utf-8"?> \n'+ self.content
         self.content = unicode(self.removeATags())
         
     def countWords(self):
@@ -59,12 +58,6 @@ class epubContent:
         soup = BeautifulSoup(self.content)
         aTags = soup.findAll('a')
         [aTag.replaceWith(aTag.text) for aTag in aTags]
-        #for aTag in aTags:
-         #   bTag = Tag(soup, 'b')
-          #  bTag.insert(0, aTag.text)
-           # aTag.replaceWith(aTag.text)'''
-            
-        #[aTag.extract() for aTag in aTags]
         return soup
         
     def replaceATags(self):
@@ -72,13 +65,6 @@ class epubContent:
         btag = Tag(soup, 'b')
         soup.a.replaceWith(btag)
         return soup
-        
-    def getHref(self):
-        soup = BeautifulSoup(self.content)
-        for tag in soup.findAll('a', href=True):
-            tag['href'] = re.sub(r'^#.*', r'', tag['href'])
-        return soup
-        
         
     def __getImageTags(self):
         soup = BeautifulSoup(self.content)

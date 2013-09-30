@@ -9,7 +9,7 @@ class creator:
         self.epub = epub(epubPath, htmlzPath, name)
         self.epubFiles = None
         self.epubContent = None
-        self.size = 0.2
+        self.size = 0.2 #create excerpt with 20% of the epub
         self.images = None
         
     def generateXhtmlExcerpt(self):
@@ -33,7 +33,7 @@ class creator:
         text = self.epubContent.generateExcerptContent(self.size)
         excerptContent = epubContent(text)
         #self.__addCover(excerptContent)
-        excerptContent.addDoctype()
+        excerptContent.cleanHtml()
         return excerptContent.addUtf8Encoding()
             
     def __addCover(self, excerptContent):
