@@ -40,7 +40,8 @@ class components:
         self.excerpt.write(html, 'OEBPS/'+basename)
         
     def prepareOpf(self, htmls, images):
-        opfPath = self.__getFilePath("content.opf")
+        opfPath = self.__getFilePath(".opf")
+        print opfPath
         opfParser = xmlParser(opfPath)
         opfParser.configureManifest(htmls, images)
         opfParser.configureSpine(htmls)
@@ -48,15 +49,15 @@ class components:
         return opfParser.getRoot()
 
     def prepareNcx(self):
-        ncxPath = self.__getFilePath("toc.ncx")
+        ncxPath = self.__getFilePath(".ncx")
+        print ncxPath
         ncxParser = xmlParser(ncxPath)
         ncxParser.configureNavegationPoint()
         return ncxParser.getRoot()
     
-    def __getFilePath(self, name):
-        if (os.path.isfile(self.originalEpubFilesPath+"OEBPS/"+name)):
-            return self.originalEpubFilesPath+"OEBPS/"+name
-        elif (os.path.isfile(self.originalEpubFilesPath+name)):
-            return self.originalEpubFilesPath+name
-        else:
-            print "Nxc file not found"
+    def __getFilePath(self, fileType):
+        path = self.originalEpubFilesPath
+        for path, subdirs, files in os.walk(path):
+            for x in files:
+                if x.endswith(fileType) == True:
+                    return os.path.join(path, x)
