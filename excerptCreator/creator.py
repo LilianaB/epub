@@ -32,7 +32,7 @@ class creator:
     def generateExcerptContent(self):
         text = self.epubContent.generateExcerptContent(self.size)
         excerptContent = epubContent(text)
-        self.__addCover(excerptContent)
+        #self.__addCover(excerptContent)
         excerptContent.addDoctype()
         return excerptContent.addUtf8Encoding()
             
@@ -72,7 +72,7 @@ class creator:
             excerptComponents.addMimeType()
             excerptComponents.addMetaInfoContainerXml()
             excerptComponents.addNavegation()
-            excerptComponents.addContentAndOpf(epub,htmls, files)
+            excerptComponents.addContentAndOpf(epub,htmls, files, self.images)
             excerptComponents.addImages(self.images)
 
         except Exception as e:
