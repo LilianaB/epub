@@ -1,8 +1,8 @@
 from creator import *
 
-epubPath = "/home/liliana/Projects/publication/"
-htmlzPath = "/home/liliana/Projects/publication/"
-epubId = "15882"
+epubPath = "/home/lbarrios/Projects/publications/"
+htmlzPath = "/home/lbarrios/Projects/publications/"
+epubId = "krauter"
 
 excerptCreator = creator(epubPath,htmlzPath,epubId)
 excerptCreator.generateXhtmlExcerpt()
