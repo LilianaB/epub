@@ -1,4 +1,4 @@
-from epub import *
+from epub import epub
 import unittest
 import os
 

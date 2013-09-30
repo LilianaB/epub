@@ -1,8 +1,6 @@
 # -*- coding: ISO-8859-1 -*-
 from django.utils import text, html
 from BeautifulSoup import BeautifulSoup, Tag
-import re
-import sys
 
 class epubContent:
     

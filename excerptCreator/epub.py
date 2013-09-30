@@ -1,10 +1,6 @@
 import zipfile
 import logging
 import subprocess
-import os
-import re
-from epubXml import *
-import time
 
 class epub:
     
