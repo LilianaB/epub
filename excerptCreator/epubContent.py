@@ -1,6 +1,6 @@
 # -*- coding: ISO-8859-1 -*-
 from django.utils import text, html
-from BeautifulSoup import BeautifulSoup
+from BeautifulSoup import BeautifulSoup, Tag
 import re
 import sys
 
@@ -19,9 +19,9 @@ class epubContent:
         self.content = self.content.replace("<html>", '<html xmlns="http://www.w3.org/1999/xhtml">',1)
         self.content = self.content.replace("&nbsp", "&#160")
         self.content = self.content.replace("&ndash", "&#8211")
-        self.content = '<?xml version="1.0" encoding="utf-8"?> \n <!DOCTYPE html>\n' +\
+        self.content = '<?xml version="1.0" encoding="utf-8"?> \n'+\
         self.content
-        self.content = unicode(self.getHref())
+        self.content = unicode(self.removeATags())
         
     def countWords(self):
         return len(self.splitIntoWords())
@@ -54,6 +54,24 @@ class epubContent:
         except Exception as e:
             print e
             print "Problem truncating html content"
+            
+    def removeATags(self):
+        soup = BeautifulSoup(self.content)
+        aTags = soup.findAll('a')
+        [aTag.replaceWith(aTag.text) for aTag in aTags]
+        #for aTag in aTags:
+         #   bTag = Tag(soup, 'b')
+          #  bTag.insert(0, aTag.text)
+           # aTag.replaceWith(aTag.text)'''
+            
+        #[aTag.extract() for aTag in aTags]
+        return soup
+        
+    def replaceATags(self):
+        soup = BeautifulSoup(self.content)
+        btag = Tag(soup, 'b')
+        soup.a.replaceWith(btag)
+        return soup
         
     def getHref(self):
         soup = BeautifulSoup(self.content)
