@@ -24,29 +24,39 @@ class components:
            
     def addImages(self, images):
         for image in images:
-            path = self.self.htmlzFilesPath+'/images/'+image
+            path = self.htmlzFilesPath+'/images/'+image
             basename = os.path.basename(path)
             if os.path.isfile(path):
                 self.excerpt.write(path, 'OEBPS/images/'+basename)
 
-    def addContentAndOpf(self, epub, htmls, files):
+    def addContentAndOpf(self, epub, htmls, files, images):
         for i, f in enumerate(files):
             basename = os.path.basename(f)
             self.__addHtml(epub,f,basename)
-        string = self.prepareOpf(htmls)
+        string = self.prepareOpf(htmls, images)
         self.excerpt.writestr('OEBPS/Content.opf', '<?xml version="1.0" encoding="UTF-8" ?>\n'+string)
         
     def __addHtml(self, epub, html, basename):
         self.excerpt.write(html, 'OEBPS/'+basename)
         
-    def prepareOpf(self, htmls):
-        opfParser = xmlParser(self.originalEpubFilesPath+"OEBPS/content.opf")
-        opfParser.configureManifest(htmls)
+    def prepareOpf(self, htmls, images):
+        opfPath = self.__getFilePath("content.opf")
+        opfParser = xmlParser(opfPath)
+        opfParser.configureManifest(htmls, images)
         opfParser.configureSpine(htmls)
         opfParser.deleteElement("guide")
         return opfParser.getRoot()
 
     def prepareNcx(self):
-        ncxParser = xmlParser(self.originalEpubFilesPath+"OEBPS/toc.ncx")
+        ncxPath = self.__getFilePath("toc.ncx")
+        ncxParser = xmlParser(ncxPath)
         ncxParser.configureNavegationPoint()
         return ncxParser.getRoot()
+    
+    def __getFilePath(self, name):
+        if (os.path.isfile(self.originalEpubFilesPath+"OEBPS/"+name)):
+            return self.originalEpubFilesPath+"OEBPS/"+name
+        elif (os.path.isfile(self.originalEpubFilesPath+name)):
+            return self.originalEpubFilesPath+name
+        else:
+            print "Nxc file not found"
